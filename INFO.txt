@@ -1,0 +1,72 @@
+NODE JS v18.17.0
+
+
+MYSQL via comando
+#mysql -h localhost -u root
+- SHOW DATBASES;
+  use `nome_do_banco`
+SHOW TABLES; para listar as tabelas  
+
+NPM via cimando
+# npm comando padrão
+# npm install nodemon   ( para não precisar ficar abrindo o cmd com node index.js), rodar nodemon no cmd
+# npm install -g express ( servidor node ) por padrão vem o http
+# npm install --save sequelize ( ORM ) junto com --save mysql2   
+
+##### conexão com o banco de dados ###### 
+const db = require("sequelize")
+const sequelize = new db('test','root','',{
+    host:'localhost',
+    dialect : 'mysql'
+})
+sequelize.authenticate().then(()=>{
+    console.log('connected with success')
+})
+.cacth((erro)=>{
+   console.log('erro: ' + erro)
+}) 
+#############
+
+/**criando module ( tabela no banco de dados ) **/
+const postagem = sequelize.define('postagens',{
+    //id é definido automaticamente
+    titulo : {
+        type : db.STRING
+    },
+    conteudo : {
+        type : db.TEXT
+    }
+})
+postagem.sync({force: true}) // força a criação da tabela
+
+//insert no banco de dados
+postagem.create({
+    titulo : 'Titulo',
+    conteudo : 'conteudo da postagem'
+})
+
+# node EXPRESS
+const express = require('express')
+const app = express()
+//rotas
+app.get('/',function(req,res){
+    res.send('hello world') // envia mensagem
+    res.render() // mostra a página form.handlebars
+})
+app.get('/sobre',function(req,res){
+    res.send('pagina sobre')
+})
+
+#### HANDLEBARS ( template engine ) handlebars.com #####
+npm install --save express-handlebars
+/** define o arquivo padrão  'main.handlebars'
+app.engine('handlebars', handlebars.engine({defaultLayout : 'main'}))
+app.set('view engine','handlebars')
+
+### body parser apra receber dados do form 
+ npm install --save body-parser
+ /* BODY PARSER */
+ require('body-parser)
+app.use(bodyParser.urlencoded({extended : false}))
+app.use(bodyParser.json())
+#C:\xampp\htdocs\www\aprendizado\node>
